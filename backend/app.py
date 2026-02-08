@@ -307,6 +307,11 @@ def generate_reply():
 
 @app.route('/improve-ai', methods=['POST'])
 def improve_ai():
+    # Simple security check
+    admin_secret = os.environ.get("ADMIN_SECRET")
+    if admin_secret and request.headers.get("X-Admin-Key") != admin_secret:
+        return jsonify({"error": "Unauthorized"}), 401
+
     """
     Request:
     {
@@ -366,6 +371,11 @@ def improve_ai():
 
 @app.route('/improve-ai-manually', methods=['POST'])
 def improve_ai_manually():
+    # Simple security check
+    admin_secret = os.environ.get("ADMIN_SECRET")
+    if admin_secret and request.headers.get("X-Admin-Key") != admin_secret:
+        return jsonify({"error": "Unauthorized"}), 401
+
     """
     Request:
     {

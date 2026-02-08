@@ -40,6 +40,10 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
+# Local Documentation / Debug
+API_EXAMPLES.txt
+debug_prompt_output.txt
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
