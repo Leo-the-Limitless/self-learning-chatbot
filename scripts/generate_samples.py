@@ -12,9 +12,10 @@ sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__f
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'backend', '.env'))
 
 try:
-    from app import get_latest_prompt, load_data, INITIAL_SYSTEM_PROMPT
+    from app import get_latest_prompt, INITIAL_SYSTEM_PROMPT
+    from utils import load_data
 except ImportError as e:
-    print(f"Error importing from app.py: {e}")
+    print(f"Error importing modules: {e}")
     sys.exit(1)
 
 # Initialize Groq client
