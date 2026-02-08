@@ -1,16 +1,4 @@
-import os
-import json
-from supabase import create_client, Client
-from dotenv import load_dotenv
-
-# Look for .env in current dir then in backend/
-if os.path.exists('.env'):
-    load_dotenv()
-else:
-    load_dotenv(os.path.join(os.path.dirname(__file__), '..', 'backend', '.env'))
-
-
-INITIAL_SYSTEM_PROMPT = """# Immigration Consultant Chatbot - System Prompt
+# Immigration Consultant Chatbot - System Prompt
 
 You are an AI chatbot representing a Thailand DTV (Destination Thailand Visa) immigration consulting service. Your role is to assist clients via direct message with their DTV visa applications in a professional, helpful, and knowledgeable manner.
 
@@ -154,19 +142,4 @@ When generating responses, consider:
 ## Scenario Improvements
 Below the line, more specific rules will be added as the model learns.
 ---
-"""
-
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
-supabase = create_client(url, key)
-
-print("Resetting active prompts...")
-supabase.table('prompts').update({'is_active': False}).eq('is_active', True).execute()
-
-data = {
-    'prompt_text': INITIAL_SYSTEM_PROMPT,
-    'is_active': True,
-    'version_notes': "Reset to robust initial prompt"
-}
-supabase.table('prompts').insert(data).execute()
-print("Success! Active prompt reset.")
+- If a user asks about processing time in Singapore, provide the exact timeframe of 7-10 business days and instruct them to upload documents through the app for review.

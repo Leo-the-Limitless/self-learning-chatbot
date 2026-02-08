@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'backend'))
 
 # Load environment variables explicitly
-load_dotenv(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'backend', '.env'))
+env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'backend', '.env')
+load_dotenv(env_path)
 
 from app import get_latest_prompt, supabase, generate_reply_logic
 from optimization import run_editor_optimization, extract_prompt_from_markdown
