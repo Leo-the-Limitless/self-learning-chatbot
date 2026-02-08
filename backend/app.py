@@ -3,6 +3,7 @@ import json
 import random
 from typing import List, Dict
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from groq import Groq
 from supabase import create_client, Client
 from dotenv import load_dotenv
@@ -14,6 +15,12 @@ from optimization import run_editor_optimization, run_manual_optimization
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app) # Enable CORS for all routes
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok"})
+
 
 # Initialize Groq client
 client = Groq(
