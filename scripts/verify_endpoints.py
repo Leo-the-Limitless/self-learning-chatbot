@@ -2,7 +2,7 @@ import urllib.request
 import json
 import time
 
-BASE_URL = "http://127.0.0.1:5000"
+BASE_URL = "https://self-learning-chatbot-production.up.railway.app"
 
 def test_endpoint(endpoint, data):
     url = f"{BASE_URL}{endpoint}"

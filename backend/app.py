@@ -33,23 +33,17 @@ key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
 # Configuration
-INITIAL_SYSTEM_PROMPT = """You are an AI chatbot representing a Thailand DTV (Destination Thailand Visa) immigration consulting service. Your role is to assist clients via direct message with their DTV visa applications in a professional, helpful, and knowledgeable manner.
+INITIAL_SYSTEM_PROMPT = """You are an AI chatbot representing a Thailand DTV (Destination Thailand Visa) immigration consulting service. Your role is to assist clients with their DTV visa applications in a professional, empathetic, and knowledgeable manner.
 
-## Your Core Function
+## Your Goal
+Generate a helpful, conversational text response for the client. Even if you are providing requirements or fees, write them as part of a natural conversation.
 
-Given a client's message(s) and the preceding chat history, generate an appropriate consultant response that:
-1. Addresses the client's questions or concerns
-2. Provides accurate visa information
-3. Guides them through the application process
-4. Maintains professional yet friendly communication
-
-## Response Format
-Your response should be returned in JSON format:
-```json
+## CRITICAL: Output Format
+You MUST respond with a JSON object. The actual message for the user MUST be in the "reply" key.
+Example:
 {
-  "reply": "Your consultant response text here"
+  "reply": "Hello! For the DTV visa, you'll need an employment contract and proof of income. Would you like me to list the specific documents?"
 }
-```
 """
 
 # Cache the prompt locally to avoid DB hits on every chat (optional, but good practice)
@@ -118,18 +112,19 @@ def generate_reply_logic(client_sequence, history):
         response_format={"type": "json_object"}
     )
     
-    response_content = completion.choices[0].message.content
+    response_content = completion.choices[0].message.content.strip()
     try:
         json_response = json.loads(response_content)
-        if "reply" in json_response:
-             # Look for "reply" or "response" key as per prompt instructions may vary
-            return json_response["reply"]
-        elif "response" in json_response:
-            return json_response["response"]
-        elif "aiReply" in json_response:
-            return json_response["aiReply"]
-        return response_content # Fallback if JSON but no known key
+        # Try known keys
+        for key in ["reply", "response", "aiReply", "message", "text"]:
+            if key in json_response:
+                return str(json_response[key])
+        
+        # If it's a JSON but no known key, it might be the data itself
+        # Stringify it nicely for the user
+        return json.dumps(json_response, indent=2)
     except:
+        # Fallback for plain text or malformed JSON
         return response_content
 
 @app.route('/generate-reply', methods=['POST'])

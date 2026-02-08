@@ -33,6 +33,9 @@ export default function Home() {
 
     try {
       const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      if (!backendUrl) {
+        throw new Error("Backend URL is not defined. Please restart your dev server.");
+      }
       console.log('Sending request to:', `${backendUrl}/generate-reply`);
 
       const response = await fetch(`${backendUrl}/generate-reply`, {
