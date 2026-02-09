@@ -2,7 +2,7 @@ import os
 import json
 import random
 from typing import List, Dict
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from flask_cors import CORS
 from groq import Groq
 from supabase import create_client, Client
@@ -17,9 +17,13 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app) # Enable CORS for all routes
 
+@app.route('/')
+def index():
+    return redirect('/health')
+
 @app.route('/health')
 def health():
-    return jsonify({"status": "ok"})
+    return jsonify({"status": "DTV Chatbot is running"})
 
 
 # Initialize Groq client
