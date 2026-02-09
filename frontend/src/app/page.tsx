@@ -93,7 +93,7 @@ export default function Home() {
               requirements, or the application process.
             </p>
             <div className="flex flex-wrap gap-2 justify-center mt-6">
-              {['What is DTV?', 'Requirements for Remote Workers', 'How long is processing?'].map((suggestion) => (
+              {['How much is your service fee?', 'Requirements for Remote Workers', 'How long is processing?'].map((suggestion) => (
                 <button
                   key={suggestion}
                   onClick={() => setInput(suggestion)}
